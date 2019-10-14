@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="./jquery-3.4.1.js"></script>
+    <style>
+        span {
+            margin-top: 10px;
+        }
+
+        .form-group span {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h1 style="margin-bottom: 50px;">免费注册</h1>
+        <div class="form-group">
+            <label for="exampleInputEmail1">用户名</label>
+            <input type="email" class="form-control" id="username" placeholder="">
+            <span class="name-block" style="display:none"></span>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">密码</label>
+            <input type="password" class="form-control" id="password" placeholder="">
+            <span class="password-block" style="display:none">请输入密码</span>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">确认密码</label>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="">
+            <span class="help-block" style="display:none">两次输入密码不一致</span>
+        </div>
+        <button class="btn btn-success">注册</button>
+    </div>
+    <script>
+        var username = document.querySelector('#username');
+        var password = document.querySelector('#password');
+        var confirmPassword = document.querySelector('#confirmPassword');
+        var btn = document.querySelector('.btn');
+        let nameBlock = username.nextElementSibling;
+        let passwordBlock = password.nextElementSibling;
+        var helpBlock = confirmPassword.nextElementSibling;
+        var confirmPasswordParent = confirmPassword.parentElement;
+        var body = document.getElementsByTagName('body');
+
+        //用户名输入框失去焦点时
+        username.onblur = () => {
+            let _username = username.value;
+
+            let xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                let res = JSON.parse(xhr.responseText);
+                if (res.code === 1) {
+                    username.parentElement.classList.remove('has-error');
+                    username.parentElement.classList.add('has-success');
+                    nameBlock.parentElement.classList.remove('has-error');
+                    nameBlock.style.display = 'none';
+                } else if (res.code === 0) {
+                    username.parentElement.classList.remove('has-success')
+                    username.parentElement.classList.add('has-error')
+                    nameBlock.parentElement.classList.add('has-error');
+                    nameBlock.style.display = 'block';
+                    nameBlock.innerHTML = "用户名已存在";
+                }
+                if (username.value == "") {
+                username.parentElement.classList.remove('has-success');
+                username.parentElement.classList.add('has-error');
+                nameBlock.style.display = 'block';
+                nameBlock.innerHTML = "用户名不能为空";
+                }
+            }
+
+            // hard code
+            xhr.open('get', '/user/check?username=' + _username, true);
+            xhr.send()
+        }
+    
+        password.onblur = () => {
+            if(password.value == ""){
+                password.parentElement.classList.remove('has-success');
+                password.parentElement.classList.add('has-error');
+                passwordBlock.style.display = 'block';
+                }else{
+                    password.parentElement.classList.remove('has-error');
+                    passwordBlock.style.display = 'none';
+                }
+        }
+
+        //点击注册时
+        btn.onclick = () => {
+            // 判断两次输入密码是否一致
+            if (password.value != confirmPassword.value) {
+                // alert('两次输入密码不一致')
+                helpBlock.style.display = 'block';
+                confirmPasswordParent.classList.add('has-error')
+            } else if(helpBlock.style.display == 'block' || nameBlock.style.display == 'block'){
+                return;
+            }else{
+                helpBlock.style.display = 'none';
+                confirmPasswordParent.classList.remove('has-error')
+                location.href = 'login.html';
+            }
+            
+            let xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                //console.log(xhr.responseText)
+            }
+            // hard code
+            xhr.open('post', '/user/reg', true);
+            // 修改请求
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send(`username=${username.value}&password=${password.value}`)
+        } 
+    </script>
+</body>
+
+</html>

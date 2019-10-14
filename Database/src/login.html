@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <link rel="stylesheet" href="./bootstrap-3.3.7-dist/css/bootstrap.css">
+    <style>
+        .err-block{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h1 style="margin-bottom: 50px;">用户登录</h1>
+        <div class="form-group">
+            <label for="exampleInputEmail1">用户名</label>
+            <input type="email" class="form-control" id="username" placeholder="">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">密码</label>
+            <input type="password" class="form-control" id="password" placeholder="">
+        </div>
+        <div class="checkbox">
+            <label for="">
+                <input type="checkbox" id="mdl">七天免登录
+            </label>
+        </div>
+        <span class="err-block" style="display:none">用户名或密码错误</span>
+        <button class="btn btn-success">登录</button>
+    </div>
+    <script>
+         var username = document.querySelector('#username');
+        var password = document.querySelector('#password');
+        var btn = document.querySelector('.btn');
+        let errBlock = document.querySelector('.err-block');
+        let mdl = document.querySelector('#mdl');
+
+         btn.onclick = () => {
+            let xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                let res = JSON.parse(xhr.responseText);
+                if(res.code===1){
+                    localStorage.setItem('Authorization',res.data);
+                    location.href = '/index.html';
+                }else if(res.code === 0){
+                    errBlock.style.display = 'block';
+                }
+            }
+            let params = `username=${username.value}&password=${password.value}`
+            if(mdl.checked){
+                params += '&mdl=1';
+            }
+            xhr.open('get', `/user/login?${params}`, true);
+            xhr.send()
+        }
+    
+        //获取本地token
+        let Authorization = localStorage.getItem('Authorization');
+        if(Authorization){
+            let xhr = new XMLHttpRequest();
+            xhr.onload = ()=>{
+                let res = JSON.parse(xhr.responseText);
+                if(res.code === 1){
+                    location.href = '/index.html';
+                }
+            }
+    
+            xhr.open('get','/verify',true);
+            //利用请求头传送token
+            xhr.setRequestHeader('Authorization',Authorization);
+            xhr.send();
+        }
+    </script>
+</body>
+
+</html>
