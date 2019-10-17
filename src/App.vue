@@ -43,17 +43,10 @@ body {
 a {
   text-decoration: none;
 }
-<<<<<<< HEAD
-#app {
-  width: 100%;
-  height: 100%;
-}
 .content {
   margin: auto;
 }
-=======
 #app{width:100%;height:100%;background-repeat: no-repeat;background-size:100% 100%;}
 
->>>>>>> b2e8774b2246b3d46015e5e663bbcd838ef75d5d
 </style>
 

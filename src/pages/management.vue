@@ -376,17 +376,11 @@ export default {
     }
   },
   async created() {
-<<<<<<< HEAD
-    let { data } = await this.$axios.get("http://127.0.0.1:1906/goodsgl/");
-    this.goodsData = data;
-    console.log(data);
-=======
+    let { data:dada } = await this.$axios.get("http://127.0.0.1:1906/goodsgl/");
+    this.goodsData = dada;
     let { data } = await this.$axios.get("http://127.0.0.1:1906/user");
-    console.log(data);
-
     this.userData = data;
     this.user = this.$route.query.username;
->>>>>>> b0e439da88c14d22b298d662024958f4b5b8df5f
   }
 };
 </script>
