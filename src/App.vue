@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div class="content">
       <router-view />
-    </div>
   </div>
 </template>
 
@@ -43,13 +41,7 @@ html,body{
 a {
   text-decoration: none;
 }
-#app{width:100%;height:100%;background-image: url(./assets/h.jpg);background-repeat: no-repeat;background-size:100% 100%;}
-.content{
-    
-    width: 80%;
-    height: 30%;
-    margin: auto;
-    padding-top:6%;
-}
+#app{width:100%;height:100%;background-repeat: no-repeat;background-size:100% 100%;}
+
 </style>
 

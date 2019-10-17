@@ -10,6 +10,7 @@ Vue.use(VueRouter);
 // 引入页面组件
 import Home from '../pages/Home.vue';
 import Goods from '../pages/Goods.vue';
+import Management from '../pages/Management.vue'
 
 
 // 3. 实例化router并配置参数
@@ -32,6 +33,12 @@ let router = new VueRouter({
             name: 'goods',
             path: '/Goods',
             component: Goods
+        },
+        // 购物车
+        {
+            name: 'management',
+            path: '/management',
+            component: Management
         }
     ]
 });
