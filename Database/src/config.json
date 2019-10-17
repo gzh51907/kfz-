@@ -1,6 +1,12 @@
 {
     "PORT": "1906",
+<<<<<<< HEAD
     "DBurl": "mongodb://127.0.0.1:27017",
     "DBname": "kfz",
     "secret": "pengyh"
+=======
+    "DBurl":"mongodb://127.0.0.1:27017",
+    "DBname":"kfz",
+    "secret":"pengyh"
+>>>>>>> b0e439da88c14d22b298d662024958f4b5b8df5f
 }

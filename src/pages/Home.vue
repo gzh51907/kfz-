@@ -29,7 +29,7 @@ export default {
       ruleForm: {
         username: "",
         password: "",
-        mdl: true
+        mdl: false
       },
       rules: {
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
@@ -57,6 +57,7 @@ export default {
 
           let { username, password, mdl } = this.ruleForm;
 
+
           let { data } = await this.$axios.get(
             "http://localhost:1906/user/login",
             {
@@ -73,8 +74,15 @@ export default {
           if (data.code === 1) {
             let { targetUrl } = this.$route.query;console.log('targetUrl:',targetUrl)
 
+<<<<<<< HEAD
+            this.$router.push({
+              path: targetUrl || "/management",query:{
+                username
+              }
+=======
             this.$router.replace({
               path: targetUrl || "/management"
+>>>>>>> b2e8774b2246b3d46015e5e663bbcd838ef75d5d
             });
 
             // 把token写入localstorage
