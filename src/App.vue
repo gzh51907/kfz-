@@ -37,19 +37,20 @@ export default {
   margin: 0;
   box-sizing: border-box;
 }
-html,body{
-  width: 100%;height: 100%;
+html,
+body {
+  width: 100%;
+  height: 100%;
 }
 a {
   text-decoration: none;
 }
-#app{width:100%;height:100%;background-image: url(./assets/h.jpg);background-repeat: no-repeat;background-size:100% 100%;}
-.content{
-    
-    width: 80%;
-    height: 30%;
-    margin: auto;
-    padding-top:6%;
+#app {
+  width: 100%;
+  height: 100%;
+}
+.content {
+  margin: auto;
 }
 </style>
 
