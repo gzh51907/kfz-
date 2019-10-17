@@ -10,7 +10,7 @@ Vue.use(VueRouter);
 // 引入页面组件
 import Home from '../pages/Home.vue';
 import Goods from '../pages/Goods.vue';
-import Management from '../pages/Management.vue'
+import Management from '../pages/management.vue'
 
 
 // 3. 实例化router并配置参数

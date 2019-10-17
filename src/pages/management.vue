@@ -91,68 +91,38 @@
 
         <!-- 商品管理 -->
         <el-tab-pane label="商品管理">
-          <div class="content">
-            <el-row style="display:flex;">
-              <el-input
-                placeholder="搜索商品"
-                v-model="inputSearch"
-                style="max-width:280px"
-                prefix-icon="el-icon-search"
-              ></el-input>
-
-              <el-button type="success">搜索商品</el-button>
-
-              <el-button type="success" @click="addUser()">添加新商品</el-button>
-            </el-row>
-
-            <el-table
-              :data="goodsData"
-              style="width: 100%"
-              height="500px"
-              @selection-change="handleSelectionChange"
-              ref="multipleTable"
-              tooltip-effect="dark"
-            >
-              <el-table-column type="selection" width="55"></el-table-column>
-
-              <el-table-column label="创建日期" width="180">
-                <template slot-scope="scope">
-                  <i class="el-icon-time"></i>
-                  <span style="margin-left: 10px">{{ scope.row.date }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column label="商品ID" width="180">
-                <template slot-scope="scope">
-                  <span style="margin-left: 10px">{{ scope.row.goodsID }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column label="商品名称" width="180">
-                <template slot-scope="scope">
-                  <span style="margin-left: 10px" contenteditable="false">{{ scope.row.goodsName }}</span>
-                </template>
-              </el-table-column>
-
-              <el-table-column label="操作">
-                <template slot-scope="scope">
-                  <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">修改</el-button>
-
-                  <el-button
-                    size="mini"
-                    type="danger"
-                    @click="handleDelete(scope.$index, scope.row)"
-                  >删除</el-button>
-
-                  <el-button
-                    size="mini"
-                    type="success"
-                    @click="handleSubmit(scope.$index, scope.row)"
-                  >提交</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
+          <el-row style="display:flex;margin:20px 0 10px 0;">
+            <el-input
+              placeholder="搜索用户"
+              v-model="inputSearch"
+              style="max-width:280px"
+              prefix-icon="el-icon-search"
+              :clearable="true"
+            ></el-input>
+            <el-button type="success">搜索用户</el-button>
+            <el-button type="success" @click="addgoods()">添加新用户</el-button>
+          </el-row>
+          <el-table :data="goodsData" style="width: 85%;" height="600">
+            <el-table-column fixed prop="dateli" label="日期" width="150"></el-table-column>
+            <el-table-column prop="_id" label="id" width="120"></el-table-column>
+            <el-table-column prop="title" label="产品名称" width="120"></el-table-column>
+            <el-table-column prop="action1" label="店铺名" width="120"></el-table-column>
+            <el-table-column prop="imgsrc" label="图片" width="200"></el-table-column>
+            <el-table-column prop="action2" label="星级" width="120"></el-table-column>
+            <el-table-column prop="prite" label="价格" width="120"></el-table-column>
+            <el-table-column prop="goods_kucun" label="库存" width="120"></el-table-column>
+            <el-table-column prop="action0" label="品级" width="120"></el-table-column>
+            <el-table-column fixed="right" label="操作" width="100">
+              <template slot-scope="scope">
+                <el-button type="text" size="small" @click.native="handit()">修改</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click.native.prevent="deleteow(scope.$index, goodsData)"
+                >删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-tab-pane>
 
         <!-- 订单管理 -->
@@ -226,8 +196,6 @@
   </div>
 </template>
 <script>
-
-
 export default {
   data() {
     return {
@@ -254,9 +222,15 @@ export default {
       ],
       goodsData: [
         {
-          date: "2016/05/02",
-          goodsID: "1",
-          goodsName: "意大利炮"
+          dateli: "2016/05/02",
+          _id: "1",
+          title: "意大利炮",
+          imgsrc: "",
+          prite: "",
+          goods_kucun: "",
+          action2: "",
+          action0: "",
+          action1: ""
         }
       ],
       orderData: [
@@ -279,6 +253,13 @@ export default {
 
   components: {},
   methods: {
+    handit() {},
+    deleteow(index, rows) {
+      let da = rows.splice(index, 1);
+      da.forEach(element => {
+        console.log(element._id);
+      });
+    },
     handleEdit(index, id) {
       this.userData[index].passwordWrite = true;
     },
@@ -307,7 +288,25 @@ export default {
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
+    },
+    addgoods() {
+      this.goodsData.push({
+        dateli: new Date().toLocaleDateString(),
+        _id: "1",
+        title: "意大利炮",
+        imgsrc: "",
+        prite: "",
+        goods_kucun: "",
+        action2: "",
+        action0: "",
+        action1: ""
+      });
     }
+  },
+  async created() {
+    let { data } = await this.$axios.get("http://127.0.0.1:1906/goodsgl/");
+    this.goodsData = data;
+    console.log(data);
   }
 };
 </script>
