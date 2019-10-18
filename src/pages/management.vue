@@ -108,24 +108,116 @@
             <el-button type="success">搜索用户</el-button>
             <el-button type="success" @click="addgoods()">添加新用户</el-button>
           </el-row>
-          <el-table :data="goodsData" style="width: 85%;" height="600">
-            <el-table-column fixed prop="dateli" label="日期" width="150"></el-table-column>
-            <el-table-column prop="_id" label="id" width="120"></el-table-column>
-            <el-table-column prop="title" label="产品名称" width="120"></el-table-column>
-            <el-table-column prop="action1" label="店铺名" width="120"></el-table-column>
-            <el-table-column prop="imgsrc" label="图片" width="200"></el-table-column>
-            <el-table-column prop="action2" label="星级" width="120"></el-table-column>
-            <el-table-column prop="prite" label="价格" width="120"></el-table-column>
-            <el-table-column prop="goods_kucun" label="库存" width="120"></el-table-column>
-            <el-table-column prop="action0" label="品级" width="120"></el-table-column>
+          <el-table :data="goodsData" style="width: 90%;" height="600">
+            <el-table-column fixed prop="dateli" label="日期" width="150">
+              <template slot-scope="scope">
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.dateli"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="_id" label="id" width="120">
+              <template slot-scope="scope">
+                <input
+                  placeholder="ID自动生成"
+                  disabled="true"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row._id"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="title" label="产品名称" width="120">
+              <template slot-scope="scope">
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.title"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="action1" label="店铺名" width="120">
+              <template slot-scope="scope">
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.action1"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="imgsrc" label="图片" width="200">
+              <template slot-scope="scope">
+                <img :src="scope.row.imgsrc" alt style="width:70px;height:100px;" />
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.imgsrc"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="action2" label="星级" width="120">
+              <template slot-scope="scope">
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.action2"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="prite" label="价格" width="120">
+              <template slot-scope="scope">
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.prite"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="goods_kucun" label="库存" width="120">
+              <template slot-scope="scope">
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.goods_kucun"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column prop="action0" label="品级" width="120">
+              <template slot-scope="scope">
+                <input
+                  :disabled="scope.row.disalber"
+                  style="border:none;background-color: white;"
+                  ref="mima"
+                  v-model="scope.row.action0"
+                />
+              </template>
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="100">
               <template slot-scope="scope">
-                <el-button type="text" size="small" @click.native="handit()">修改</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click.native="handit(scope.$index,scope.row)"
+                >修改</el-button>
                 <el-button
                   type="text"
                   size="small"
                   @click.native.prevent="deleteow(scope.$index, goodsData)"
                 >删除</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click.native="handitald(scope.$index,scope.row)"
+                >提交</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -213,15 +305,16 @@ export default {
       addOrAlter: "",
       goodsData: [
         {
-          dateli: "2016/05/02",
-          _id: "1",
-          title: "意大利炮",
+          dateli: "",
+          _id: "",
+          title: "",
           imgsrc: "",
           prite: "",
           goods_kucun: "",
           action2: "",
           action0: "",
-          action1: ""
+          action1: "",
+          disalber: "true"
         }
       ],
       orderData: [
@@ -244,12 +337,47 @@ export default {
 
   components: {},
   methods: {
-    handit() {},
+    handitald(index, row) {
+      let {
+        dateli,
+        _id,
+        title,
+        imgsrc,
+        prite,
+        goods_kucun,
+        action2,
+        action0,
+        action1
+      } = row;
+      
+      let disalber = "true";
+
+      this.$axios.post("http://127.0.0.1:1906/goodsgl/addgoods", {
+        dateli,
+        _id,
+        title,
+        imgsrc,
+        prite,
+        goods_kucun,
+        action2,
+        action0,
+        action1,
+        disalber
+      });
+      alert("修改成功!!!");
+    },
+    handit(index) {
+      this.goodsData[index].disalber = false;
+    },
     deleteow(index, rows) {
       let da = rows.splice(index, 1);
       da.forEach(element => {
-        console.log(element._id);
+        let { _id } = element;
+        this.$axios.post("http://127.0.0.1:1906/goodsgl/deletegoods", {
+          _id: _id
+        });
       });
+      alert("删除成功!!!");
     },
     exit() {
       this.$router.replace({
@@ -312,7 +440,6 @@ export default {
         // this.userData[index].passwordWrite = false;
         // this.userData[index].namewordWrite = false;
 
-
         let result = await this.$axios.post("http://127.0.0.1:1906/user/add", {
           username,
           password
@@ -364,20 +491,25 @@ export default {
     addgoods() {
       this.goodsData.push({
         dateli: new Date().toLocaleDateString(),
-        _id: "1",
-        title: "意大利炮",
+        _id: "",
+        title: "",
         imgsrc: "",
         prite: "",
         goods_kucun: "",
         action2: "",
         action0: "",
-        action1: ""
+        action1: "",
+        disalber: "true"
       });
     }
   },
   async created() {
-    let { data:dada } = await this.$axios.get("http://127.0.0.1:1906/goodsgl/");
+    let { data: dada } = await this.$axios.get(
+      "http://127.0.0.1:1906/goodsgl/"
+    );
     this.goodsData = dada;
+    console.log(dada);
+
     let { data } = await this.$axios.get("http://127.0.0.1:1906/user");
     this.userData = data;
     this.user = this.$route.query.username;
