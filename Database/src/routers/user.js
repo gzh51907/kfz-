@@ -68,7 +68,7 @@ Router.get('/search', async (req, res) => {
     console.log(req.query);
 
     let result = await mongo.find('user', {
-        username
+        username: RegExp(username)
     });
 
     res.send(result);
