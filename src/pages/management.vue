@@ -16,10 +16,10 @@
       </div>
     </header>
 
-    <main>
-      <el-tabs tabPosition="left">
+    <main @click="change()">
+      <el-tabs tabPosition="left" @tab-click="handleClick" :value="item">
         <!-- 用户管理 -->
-        <el-tab-pane label="用户管理">
+        <el-tab-pane label="用户管理" name="0">
           <div class="content">
             <el-row style="display:flex;">
               <el-input
@@ -96,7 +96,7 @@
         </el-tab-pane>
 
         <!-- 商品管理 -->
-        <el-tab-pane label="商品管理">
+        <el-tab-pane label="商品管理" @click="change" name="1">
           <el-row style="display:flex;margin:20px 0 10px 0;">
             <el-input
               placeholder="搜索用户"
@@ -224,7 +224,7 @@
         </el-tab-pane>
 
         <!-- 订单管理 -->
-        <el-tab-pane label="订单管理">
+        <el-tab-pane label="订单管理" name="2">
           <div class="content">
             <el-row style="display:flex;">
               <el-input
@@ -297,6 +297,7 @@
 export default {
   data() {
     return {
+      item: "d",
       inputSearch: "",
       user: "",
       newMessageNumber: 1,
@@ -337,6 +338,20 @@ export default {
 
   components: {},
   methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+    change() {
+      if (event.target.innerHTML == "用户管理") {
+        document.cookie = "0";
+      } else if (event.target.innerHTML == "商品管理") {
+        document.cookie = "1";
+      } else if (event.target.innerHTML == "订单管理") {
+        document.cookie = "2";
+      }
+      console.log(document.cookie);
+    },
+
     handitald(index, row) {
       let {
         dateli,
@@ -349,7 +364,7 @@ export default {
         action0,
         action1
       } = row;
-      
+
       let disalber = "true";
 
       this.$axios.post("http://127.0.0.1:1906/goodsgl/addgoods", {
@@ -513,6 +528,8 @@ export default {
     let { data } = await this.$axios.get("http://127.0.0.1:1906/user");
     this.userData = data;
     this.user = this.$route.query.username;
+    console.log(this.item);
+    this.item = document.cookie;
   }
 };
 </script>
