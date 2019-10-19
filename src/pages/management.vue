@@ -297,7 +297,7 @@
 export default {
   data() {
     return {
-      item: "d",
+      item: "0",
       inputSearch: "",
       user: "",
       newMessageNumber: 1,
@@ -343,13 +343,13 @@ export default {
     },
     change() {
       if (event.target.innerHTML == "用户管理") {
-        document.cookie = "0";
+        document.cookie = "用户管理";
       } else if (event.target.innerHTML == "商品管理") {
-        document.cookie = "1";
+        document.cookie = "商品管理";
       } else if (event.target.innerHTML == "订单管理") {
-        document.cookie = "2";
+        document.cookie = "订单管理";
       }
-      console.log(document.cookie);
+      console.log(document.cookie.indexOf("用户管理"));
     },
 
     handitald(index, row) {
@@ -405,7 +405,7 @@ export default {
       console.log(this.inputSearch);
 
       let { data } = await this.$axios.get(
-        "http://127.0.0.1:1906/user/search",
+        "http://127.0.0.1:1906/user/searchBg",
         {
           params: { username: this.inputSearch }
         }
@@ -421,11 +421,15 @@ export default {
     async handleDelete(index, row) {
       let username = this.userData[index].username;
       console.log(username);
-
-      let result = await this.$axios.post("http://127.0.0.1:1906/user/delete", {
-        username
-      });
-      this.userData.splice(index, 1);
+      if (confirm("确定删除吗?此删除不可恢复")) {
+        let result = await this.$axios.post(
+          "http://127.0.0.1:1906/user/delete",
+          {
+            username
+          }
+        );
+        this.userData.splice(index, 1);
+      }
     },
 
     //添加新用户
@@ -455,10 +459,13 @@ export default {
         // this.userData[index].passwordWrite = false;
         // this.userData[index].namewordWrite = false;
 
-        let result = await this.$axios.post("http://127.0.0.1:1906/user/add", {
-          username,
-          password
-        });
+        let result = await this.$axios.post(
+          "http://127.0.0.1:1906/user/addBg",
+          {
+            username,
+            password
+          }
+        );
         console.log(result);
 
         let { data } = result;
@@ -474,7 +481,7 @@ export default {
         console.log(username, password);
 
         let result = await this.$axios.post(
-          "http://127.0.0.1:1906/user/alter",
+          "http://127.0.0.1:1906/user/alterBg",
           {
             username,
             password
@@ -528,8 +535,15 @@ export default {
     let { data } = await this.$axios.get("http://127.0.0.1:1906/user");
     this.userData = data;
     this.user = this.$route.query.username;
+
+    if (document.cookie.indexOf("商品管理") > 0) {
+      this.item = "1";
+    } else if (document.cookie.indexOf("订单管理") > 0) {
+      this.item = "2";
+    } else {
+      this.item = "0";
+    }
     console.log(this.item);
-    this.item = document.cookie;
   }
 };
 </script>

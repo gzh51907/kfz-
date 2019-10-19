@@ -10,7 +10,7 @@ const {
 } = require('../utils');
 
 // 后台管理系统添加新用户
-Router.post('/add', async (req, res) => {
+Router.post('/addBg', async (req, res) => {
     let {
         username,
         password
@@ -40,7 +40,7 @@ Router.post('/add', async (req, res) => {
 })
 
 // 后台管理系统修改密码
-Router.post('/alter', async (req, res) => {
+Router.post('/alterBg', async (req, res) => {
     let {
         username,
         password
@@ -61,7 +61,7 @@ Router.post('/alter', async (req, res) => {
 
 
 // 后台管理系统查询用户
-Router.get('/search', async (req, res) => {
+Router.get('/searchBg', async (req, res) => {
     let {
         username
     } = req.query
@@ -74,6 +74,11 @@ Router.get('/search', async (req, res) => {
     res.send(result);
 
 });
+
+
+
+
+
 // 注册
 // /user/reg
 Router.post('/reg', async (req, res) => {
@@ -156,13 +161,14 @@ Router.post('/', async (req, res) => {
     }]);
     res.send(result);
 });
+
 Router.get('/', async (req, res) => {
     let result = await mongo.find('user', {});
     res.send(result);
 
 });
 
-// 删除用户
+// 后台管理系统删除用户
 Router.post('/delete', async (req, res) => {
 
     let username = req.body;
@@ -174,6 +180,7 @@ Router.post('/delete', async (req, res) => {
     res.send(result);
 
 });
+
 
 Router.patch('/', async (req, res) => {
     console.log(req.query);
